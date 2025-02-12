@@ -1,24 +1,40 @@
 import { Canvas } from '@react-three/fiber';
+import { useMemo } from 'react';
 
 import './App.css';
 import Box from './components/Box';
 import Ground from './components/Ground';
-import { PointerLockControls, Stats } from '@react-three/drei';
+import { FlyControls, PointerLockControls, Stats } from '@react-three/drei';
 
 const App = () => {
+  const gridSize = 50; // Reduced from 100 to 50 for better performance
+
+  const grounds = useMemo(() => {
+    const items = [];
+    for (let i = 0; i < gridSize; i++) {
+      for (let j = 0; j < gridSize; j++) {
+        items.push(
+          <Ground
+            key={`${i}-${j}`}
+            position={[i - gridSize / 2, 0, j - gridSize / 2]}
+            frustumCulled={true}
+          />,
+        );
+      }
+    }
+    return items;
+  }, []);
+
   return (
     <section className="three-canvas">
-      <Canvas>
+      <Canvas shadows camera={{ position: [0, 10, 0], fov: 60 }}>
         <PointerLockControls />
+        <FlyControls rollSpeed={0} movementSpeed={5} dragToLook />
         <Stats />
         <ambientLight />
-        <pointLight position={[1, 1, 1]} decay={5} />
-        <Box rotation={[0, 1, 0]} position={[-1, 0, 0]} scale={[4, 4, 4]} />
-        {Array.from({ length: 100 }).map((_, index) =>
-          Array.from({ length: 100 }).map((_, jindex) => (
-            <Ground position={[index + 1, -2, jindex + 1]} />
-          )),
-        )}
+        <directionalLight position={[-50, 70, 50]} castShadow />
+        <Box rotation={[0, 1, 0]} position={[-1, 2, 0]} scale={[4, 4, 4]} />
+        {grounds}
       </Canvas>
     </section>
   );
