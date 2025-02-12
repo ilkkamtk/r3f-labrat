@@ -9,7 +9,7 @@ const Ground = memo((props: ThreeElements['mesh']) => {
       <planeGeometry args={[1, 1, 50, 50]} />
       <meshStandardMaterial
         {...stoneTexture}
-        displacementScale={0.03}
+        displacementScale={0.04}
         roughness={0.2}
       />
     </mesh>
