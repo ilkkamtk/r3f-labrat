@@ -10,6 +10,7 @@ import {
   Sky,
   Stats,
 } from '@react-three/drei';
+import Crosshair from './components/Crosshair';
 
 const App = () => {
   const gridSize = 50; // Reduced from 100 to 50 for better performance
@@ -57,6 +58,7 @@ const App = () => {
         />
         {grounds}
       </Canvas>
+      <Crosshair />
     </section>
   );
 };
